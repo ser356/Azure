@@ -53,6 +53,91 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "heart.csv",
+						"container": "data"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "age",
+						"type": "String"
+					},
+					{
+						"name": "sex",
+						"type": "String"
+					},
+					{
+						"name": "cp",
+						"type": "String"
+					},
+					{
+						"name": "trestbps",
+						"type": "String"
+					},
+					{
+						"name": "chol",
+						"type": "String"
+					},
+					{
+						"name": "fbs",
+						"type": "String"
+					},
+					{
+						"name": "restecg",
+						"type": "String"
+					},
+					{
+						"name": "thalach",
+						"type": "String"
+					},
+					{
+						"name": "exang",
+						"type": "String"
+					},
+					{
+						"name": "oldpeak",
+						"type": "String"
+					},
+					{
+						"name": "slope",
+						"type": "String"
+					},
+					{
+						"name": "ca",
+						"type": "String"
+					},
+					{
+						"name": "thal",
+						"type": "String"
+					},
+					{
+						"name": "target",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
 		}
 	]
 }
