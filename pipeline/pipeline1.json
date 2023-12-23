@@ -23,7 +23,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "DelimitedText1",
+						"referenceName": "gobdataset",
 						"type": "DatasetReference"
 					},
 					"fieldList": [
@@ -32,6 +32,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -67,7 +68,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(activity('Get Metadata1').output.columnCount, 14)\r\n",
+						"value": "@equals(activity('Get Metadata1').output.columnCount, 7)\n",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
