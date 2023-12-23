@@ -7,7 +7,7 @@
 				"type": "GetMetadata",
 				"dependsOn": [
 					{
-						"activity": "Validation1",
+						"activity": "FlowFileTransform",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -23,7 +23,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "gobdataset",
+						"referenceName": "modifiedgobblob",
 						"type": "DatasetReference"
 					},
 					"fieldList": [
@@ -68,7 +68,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(activity('Get Metadata1').output.columnCount, 7)\n",
+						"value": "@equals(activity('Get Metadata1').output.columnCount, 8)\n",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
@@ -131,13 +131,13 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "gobdataset",
+									"referenceName": "modifiedgobblob",
 									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
 								{
-									"referenceName": "datalakerawoutput",
+									"referenceName": "datalakedatasetgobcol",
 									"type": "DatasetReference"
 								}
 							]
@@ -163,7 +163,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "gobdataset",
+									"referenceName": "modifiedgobblob",
 									"type": "DatasetReference"
 								},
 								"logStorageSettings": {
@@ -199,6 +199,37 @@
 				"typeProperties": {
 					"message": "File Not Found ",
 					"errorCode": "1"
+				}
+			},
+			{
+				"name": "FlowFileTransform",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Validation1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dataflow1",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
 				}
 			}
 		],
