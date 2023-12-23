@@ -47,7 +47,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "DelimitedText1",
+						"referenceName": "gobdataset",
 						"type": "DatasetReference"
 					},
 					"timeout": "0.00:01:00",
@@ -131,7 +131,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "DelimitedText1",
+									"referenceName": "gobdataset",
 									"type": "DatasetReference"
 								}
 							],
