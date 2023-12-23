@@ -342,7 +342,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "DelimitedText1",
+								"referenceName": "gobdataset",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
@@ -427,7 +427,7 @@
 									},
 									"inputs": [
 										{
-											"referenceName": "DelimitedText1",
+											"referenceName": "gobdataset",
 											"type": "DatasetReference",
 											"parameters": {}
 										}
@@ -468,7 +468,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/gobdataset')]",
-				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]",
 				"[concat(variables('factoryId'), '/datasets/datalakerawoutput')]"
 			]
 		}
