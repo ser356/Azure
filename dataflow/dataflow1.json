@@ -55,6 +55,7 @@
 				"          Periodo as string,",
 				"          Total as string",
 				"     ),",
+				"     partitionFileNames:['gobcolumadd.csv'],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     partitionBy('hash', 1)) ~> outputblob"
