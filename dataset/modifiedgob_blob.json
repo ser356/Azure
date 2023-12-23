@@ -1,5 +1,5 @@
 {
-	"name": "modifiedgobblob",
+	"name": "modifiedgob_blob",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",

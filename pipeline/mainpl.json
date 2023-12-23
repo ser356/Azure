@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "mainpl",
 	"properties": {
 		"activities": [
 			{
@@ -23,7 +23,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "modifiedgobblob",
+						"referenceName": "modifiedgob_blob",
 						"type": "DatasetReference"
 					},
 					"fieldList": [
@@ -131,13 +131,13 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "modifiedgobblob",
+									"referenceName": "modifiedgob_blob",
 									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
 								{
-									"referenceName": "datalakedatasetgobcol",
+									"referenceName": "modifiedgobds_dl",
 									"type": "DatasetReference"
 								}
 							]
@@ -163,7 +163,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "modifiedgobblob",
+									"referenceName": "modifiedgob_blob",
 									"type": "DatasetReference"
 								},
 								"logStorageSettings": {

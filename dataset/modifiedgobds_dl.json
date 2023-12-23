@@ -1,5 +1,5 @@
 {
-	"name": "datalakedatasetgobcol",
+	"name": "modifiedgobds_dl",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorage1",
