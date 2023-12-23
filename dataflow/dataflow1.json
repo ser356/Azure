@@ -15,19 +15,25 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "gobdataset",
+						"referenceName": "modifiedgob_blob",
 						"type": "DatasetReference"
 					},
-					"name": "outputblob",
-					"rejectedDataLinkedService": {
-						"referenceName": "AzureBlobStorage1",
-						"type": "LinkedServiceReference"
-					}
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "agregado_blob",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
 				}
 			],
 			"transformations": [
 				{
 					"name": "derivedColumn1"
+				},
+				{
+					"name": "aggregate1"
 				}
 			],
 			"scriptLines": [
@@ -44,6 +50,8 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> entradablob",
 				"entradablob derive(Subperiodo = concat(Periodo, \" Primer Semestre\")) ~> derivedColumn1",
+				"derivedColumn1 aggregate(groupBy({Sector de actividad}),",
+				"     SectorOrdenado = count()) ~> aggregate1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
@@ -53,12 +61,19 @@
 				"          {Sector de actividad} as string,",
 				"          {Tamaño de la empresa (según ocupados)} as string,",
 				"          Periodo as string,",
-				"          Total as string",
+				"          Total as string,",
+				"          Subperiodo as string",
 				"     ),",
-				"     partitionFileNames:['gobcolumadd.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          {Principales indicadores;Pertenencia a grupo empresarial;Grupo empresarial;Sector de actividad;Tamaño de la empresa (según ocupados);Periodo;Total} as string",
+				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> outputblob"
+				"     partitionBy('hash', 1)) ~> sink2"
 			]
 		}
 	}
