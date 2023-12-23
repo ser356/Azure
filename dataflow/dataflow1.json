@@ -1,0 +1,64 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "gobdataset",
+						"type": "DatasetReference"
+					},
+					"name": "entradablob"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "gobdataset",
+						"type": "DatasetReference"
+					},
+					"name": "outputblob",
+					"rejectedDataLinkedService": {
+						"referenceName": "AzureBlobStorage1",
+						"type": "LinkedServiceReference"
+					}
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          {Principales indicadores} as string,",
+				"          {Pertenencia a grupo empresarial} as string,",
+				"          {Grupo empresarial} as string,",
+				"          {Sector de actividad} as string,",
+				"          {Tamaño de la empresa (según ocupados)} as string,",
+				"          Periodo as string,",
+				"          Total as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> entradablob",
+				"entradablob derive(Subperiodo = concat(Periodo, \" Primer Semestre\")) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          {Principales indicadores} as string,",
+				"          {Pertenencia a grupo empresarial} as string,",
+				"          {Grupo empresarial} as string,",
+				"          {Sector de actividad} as string,",
+				"          {Tamaño de la empresa (según ocupados)} as string,",
+				"          Periodo as string,",
+				"          Total as string",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> outputblob"
+			]
+		}
+	}
+}
