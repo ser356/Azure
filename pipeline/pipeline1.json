@@ -143,6 +143,23 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Fail Blob Storage",
+				"type": "Fail",
+				"dependsOn": [
+					{
+						"activity": "Validation1",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"message": "File Not Found ",
+					"errorCode": "1"
+				}
 			}
 		],
 		"annotations": []
