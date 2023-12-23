@@ -225,6 +225,67 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/modifiedgobds_dl')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "gobcolumnadd.csv",
+						"fileSystem": "raw-output"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Principales indicadores",
+						"type": "String"
+					},
+					{
+						"name": "Pertenencia a grupo empresarial",
+						"type": "String"
+					},
+					{
+						"name": "Grupo empresarial",
+						"type": "String"
+					},
+					{
+						"name": "Sector de actividad",
+						"type": "String"
+					},
+					{
+						"name": "Tamaño de la empresa (según ocupados)",
+						"type": "String"
+					},
+					{
+						"name": "Periodo",
+						"type": "String"
+					},
+					{
+						"name": "Total",
+						"type": "String"
+					},
+					{
+						"name": "Subperiodo",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/datalakerawoutput')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -281,7 +342,31 @@
 				},
 				"schema": [
 					{
-						"name": "Principales indicadores;Pertenencia a grupo empresarial;Grupo empresarial;Sector de actividad;Tamaño de la empresa (según ocupados);Periodo;Total",
+						"name": "Principales indicadores",
+						"type": "String"
+					},
+					{
+						"name": "Pertenencia a grupo empresarial",
+						"type": "String"
+					},
+					{
+						"name": "Grupo empresarial",
+						"type": "String"
+					},
+					{
+						"name": "Sector de actividad",
+						"type": "String"
+					},
+					{
+						"name": "Tamaño de la empresa (según ocupados)",
+						"type": "String"
+					},
+					{
+						"name": "Periodo",
+						"type": "String"
+					},
+					{
+						"name": "Total",
 						"type": "String"
 					}
 				]
@@ -291,7 +376,139 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"name": "[concat(parameters('factoryName'), '/modifiedgob_blob')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "gobcolumnadd.csv",
+						"container": "data"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Principales indicadores",
+						"type": "String"
+					},
+					{
+						"name": "Pertenencia a grupo empresarial",
+						"type": "String"
+					},
+					{
+						"name": "Grupo empresarial",
+						"type": "String"
+					},
+					{
+						"name": "Sector de actividad",
+						"type": "String"
+					},
+					{
+						"name": "Tamaño de la empresa (según ocupados)",
+						"type": "String"
+					},
+					{
+						"name": "Periodo",
+						"type": "String"
+					},
+					{
+						"name": "Total",
+						"type": "String"
+					},
+					{
+						"name": "Subperiodo",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "gobdataset",
+								"type": "DatasetReference"
+							},
+							"name": "entradablob"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "gobdataset",
+								"type": "DatasetReference"
+							},
+							"name": "outputblob",
+							"rejectedDataLinkedService": {
+								"referenceName": "AzureBlobStorage1",
+								"type": "LinkedServiceReference"
+							}
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          {Principales indicadores} as string,",
+						"          {Pertenencia a grupo empresarial} as string,",
+						"          {Grupo empresarial} as string,",
+						"          {Sector de actividad} as string,",
+						"          {Tamaño de la empresa (según ocupados)} as string,",
+						"          Periodo as string,",
+						"          Total as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> entradablob",
+						"entradablob derive(Subperiodo = concat(Periodo, \" Primer Semestre\")) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          {Principales indicadores} as string,",
+						"          {Pertenencia a grupo empresarial} as string,",
+						"          {Grupo empresarial} as string,",
+						"          {Sector de actividad} as string,",
+						"          {Tamaño de la empresa (según ocupados)} as string,",
+						"          Periodo as string,",
+						"          Total as string",
+						"     ),",
+						"     partitionFileNames:['gobcolumadd.csv'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> outputblob"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/gobdataset')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/mainpl')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -301,7 +518,7 @@
 						"type": "GetMetadata",
 						"dependsOn": [
 							{
-								"activity": "Validation1",
+								"activity": "FlowFileTransform",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -317,7 +534,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "gobdataset",
+								"referenceName": "modifiedgob_blob",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
@@ -364,7 +581,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"expression": {
-								"value": "@equals(activity('Get Metadata1').output.columnCount, 7)\n",
+								"value": "@equals(activity('Get Metadata1').output.columnCount, 8)\n",
 								"type": "Expression"
 							},
 							"ifFalseActivities": [
@@ -427,14 +644,14 @@
 									},
 									"inputs": [
 										{
-											"referenceName": "gobdataset",
+											"referenceName": "modifiedgob_blob",
 											"type": "DatasetReference",
 											"parameters": {}
 										}
 									],
 									"outputs": [
 										{
-											"referenceName": "datalakerawoutput",
+											"referenceName": "modifiedgobds_dl",
 											"type": "DatasetReference",
 											"parameters": {}
 										}
@@ -461,7 +678,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataset": {
-											"referenceName": "gobdataset",
+											"referenceName": "modifiedgob_blob",
 											"type": "DatasetReference",
 											"parameters": {}
 										},
@@ -499,6 +716,43 @@
 							"message": "File Not Found ",
 							"errorCode": "1"
 						}
+					},
+					{
+						"name": "FlowFileTransform",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Validation1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow1",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"entradablob": {},
+									"outputblob": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
 					}
 				],
 				"policy": {
@@ -507,8 +761,10 @@
 				"annotations": []
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/modifiedgob_blob')]",
 				"[concat(variables('factoryId'), '/datasets/gobdataset')]",
-				"[concat(variables('factoryId'), '/datasets/datalakerawoutput')]",
+				"[concat(variables('factoryId'), '/dataflows/dataflow1')]",
+				"[concat(variables('factoryId'), '/datasets/modifiedgobds_dl')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
 			]
 		}
