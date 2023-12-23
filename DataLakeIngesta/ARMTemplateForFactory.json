@@ -51,7 +51,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "DelimitedText1",
+								"referenceName": "gobdataset",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
@@ -98,7 +98,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"expression": {
-								"value": "@equals(activity('Get Metadata1').output.columnCount, 14)\r\n",
+								"value": "@equals(activity('Get Metadata1').output.columnCount, 7)\n",
 								"type": "Expression"
 							},
 							"ifFalseActivities": [
@@ -201,6 +201,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/gobdataset')]",
 				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]",
 				"[concat(variables('factoryId'), '/datasets/DelimitedText2')]"
 			]
@@ -404,6 +405,39 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/gobdataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "gob.csv",
+						"container": "data"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Principales indicadores;Pertenencia a grupo empresarial;Grupo empresarial;Sector de actividad;Tamaño de la empresa (según ocupados);Periodo;Total",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
 		}
 	]
 }
