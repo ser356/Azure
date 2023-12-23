@@ -225,6 +225,39 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/datalakerawoutput')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "gob.csv",
+						"fileSystem": "raw-output"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Principales indicadores;Pertenencia a grupo empresarial;Grupo empresarial;Sector de actividad;Tamaño de la empresa (según ocupados);Periodo;Total",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/gobdataset')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -401,7 +434,7 @@
 									],
 									"outputs": [
 										{
-											"referenceName": "DelimitedText2",
+											"referenceName": "datalakerawoutput",
 											"type": "DatasetReference",
 											"parameters": {}
 										}
@@ -436,7 +469,7 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/gobdataset')]",
 				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]",
-				"[concat(variables('factoryId'), '/datasets/DelimitedText2')]"
+				"[concat(variables('factoryId'), '/datasets/datalakerawoutput')]"
 			]
 		}
 	]
