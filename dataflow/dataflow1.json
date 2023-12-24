@@ -15,14 +15,14 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "OutCSV",
+						"referenceName": "InputModified",
 						"type": "DatasetReference"
 					},
 					"name": "salidaMain"
 				},
 				{
 					"dataset": {
-						"referenceName": "OutCSV",
+						"referenceName": "InputModified",
 						"type": "DatasetReference"
 					},
 					"name": "salidaAgregado"
@@ -55,22 +55,26 @@
 				"     SectorOrdenado = count()) ~> agggroupbysector",
 				"branch sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     input(",
+				"          {Principales indicadores;Pertenencia a grupo empresarial;Grupo empresarial;Sector de actividad;Tamaño de la empresa (según ocupados);Periodo;Total} as string",
+				"     ),",
 				"     partitionFileNames:['modifiedgob.csv'],",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> salidaMain",
+				"     partitionBy('hash', 1),",
+				"     preCommands: [],",
+				"     postCommands: []) ~> salidaMain",
 				"agggroupbysector sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     input(",
+				"          {Principales indicadores;Pertenencia a grupo empresarial;Grupo empresarial;Sector de actividad;Tamaño de la empresa (según ocupados);Periodo;Total} as string",
+				"     ),",
 				"     partitionFileNames:['agregado.csv'],",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> salidaAgregado"
+				"     partitionBy('hash', 1),",
+				"     preCommands: [],",
+				"     postCommands: []) ~> salidaAgregado"
 			]
 		}
 	}

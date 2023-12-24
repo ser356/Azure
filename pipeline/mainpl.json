@@ -100,7 +100,7 @@
 									"type": "DelimitedTextSource",
 									"storeSettings": {
 										"type": "AzureBlobStorageReadSettings",
-										"recursive": true,
+										"fileListPath": "data/pointer.txt",
 										"enablePartitionDiscovery": false
 									},
 									"formatSettings": {
@@ -130,7 +130,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "InputCSV",
+									"referenceName": "InputModified",
 									"type": "DatasetReference"
 								}
 							],
@@ -162,7 +162,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "InputCSV",
+									"referenceName": "InputModified",
 									"type": "DatasetReference"
 								},
 								"logStorageSettings": {
@@ -175,8 +175,7 @@
 								"enableLogging": true,
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
-									"recursive": false,
-									"wildcardFileName": "*.csv",
+									"fileListPath": "data/pointer.txt",
 									"enablePartitionDiscovery": false
 								}
 							}
