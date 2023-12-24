@@ -130,7 +130,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "InputCSV",
+									"referenceName": "InputModified",
 									"type": "DatasetReference"
 								}
 							],
