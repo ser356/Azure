@@ -130,7 +130,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "InputModified",
+									"referenceName": "InputCSV",
 									"type": "DatasetReference"
 								}
 							],
@@ -162,7 +162,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "InputModified",
+									"referenceName": "InputCSV",
 									"type": "DatasetReference"
 								},
 								"logStorageSettings": {
