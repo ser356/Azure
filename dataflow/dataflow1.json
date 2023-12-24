@@ -22,7 +22,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "InputModified",
+						"referenceName": "AggBlob",
 						"type": "DatasetReference"
 					},
 					"name": "salidaAgregado"

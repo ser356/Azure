@@ -1,5 +1,5 @@
 {
-	"name": "InputModified",
+	"name": "AggBlob",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "gob.csv",
+				"fileName": "agregado.csv",
 				"container": "data"
 			},
 			"columnDelimiter": ";",
