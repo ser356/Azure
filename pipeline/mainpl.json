@@ -26,7 +26,9 @@
 						"referenceName": "InputCovidCSV_Mod",
 						"type": "DatasetReference"
 					},
-					"fieldList": [],
+					"fieldList": [
+						"columnCount"
+					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
 						"recursive": true,
@@ -65,7 +67,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(activity('Get Metadata1').output.columnCount, 8)\n",
+						"value": "@equals(activity('Get Metadata1').output.columnCount,11 )\n",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
