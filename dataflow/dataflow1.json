@@ -58,7 +58,7 @@
 				"     input(",
 				"          {Principales indicadores;Pertenencia a grupo empresarial;Grupo empresarial;Sector de actividad;Tamaño de la empresa (según ocupados);Periodo;Total} as string",
 				"     ),",
-				"     partitionFileNames:['modifiedgob.csv'],",
+				"     partitionFileNames:['gob.csv'],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     partitionBy('hash', 1),",
