@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "gobdataset",
+						"referenceName": "InputCSV",
 						"type": "DatasetReference"
 					},
 					"name": "entradablob"
@@ -15,25 +15,25 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "modifiedgob_blob",
+						"referenceName": "OutCSV",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "salidaMain"
 				},
 				{
 					"dataset": {
-						"referenceName": "modifiedgob_blob",
+						"referenceName": "OutCSV",
 						"type": "DatasetReference"
 					},
-					"name": "sink2"
+					"name": "salidaAgregado"
 				}
 			],
 			"transformations": [
 				{
-					"name": "derivedColumn1"
+					"name": "branch"
 				},
 				{
-					"name": "aggregate1"
+					"name": "agggroupbysector"
 				}
 			],
 			"scriptLines": [
@@ -49,41 +49,28 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> entradablob",
-				"entradablob derive(Subperiodo = concat(Periodo, \" Primer Semestre\")) ~> derivedColumn1",
-				"derivedColumn1 aggregate(groupBy({Sector de actividad}),",
-				"     SectorOrdenado = count()) ~> aggregate1",
-				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"entradablob derive(Subperiodo = concat(Periodo, \" Primer Semestre\"),",
+				"     partitionBy('hash', 1)) ~> branch",
+				"branch aggregate(groupBy({Sector de actividad}),",
+				"     SectorOrdenado = count()) ~> agggroupbysector",
+				"branch sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          {Principales indicadores} as string,",
-				"          {Pertenencia a grupo empresarial} as string,",
-				"          {Grupo empresarial} as string,",
-				"          {Sector de actividad} as string,",
-				"          {Tamaño de la empresa (según ocupados)} as string,",
-				"          Periodo as string,",
-				"          Total as string,",
-				"          Subperiodo as string",
-				"     ),",
 				"     partitionFileNames:['modifiedgob.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sink1",
-				"aggregate1 sink(allowSchemaDrift: true,",
+				"     partitionBy('hash', 1)) ~> salidaMain",
+				"agggroupbysector sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          {Principales indicadores} as string,",
-				"          {Pertenencia a grupo empresarial} as string,",
-				"          {Grupo empresarial} as string,",
-				"          {Sector de actividad} as string,",
-				"          {Tamaño de la empresa (según ocupados)} as string,",
-				"          Periodo as string,",
-				"          Total as string,",
-				"          Subperiodo as string",
-				"     ),",
 				"     partitionFileNames:['agregado.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sink2"
+				"     partitionBy('hash', 1)) ~> salidaAgregado"
 			]
 		}
 	}

@@ -23,13 +23,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "modifiedgob_blob",
+						"referenceName": "InputCSV",
 						"type": "DatasetReference"
 					},
-					"fieldList": [
-						"columnCount",
-						"exists"
-					],
+					"fieldList": [],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
 						"recursive": true,
@@ -47,7 +44,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "gobdataset",
+						"referenceName": "InputCSV",
 						"type": "DatasetReference"
 					},
 					"timeout": "0.00:01:00",
@@ -108,39 +105,8 @@
 										"type": "DelimitedTextReadSettings"
 									}
 								},
-								"sink": {
-									"type": "DelimitedTextSink",
-									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings"
-									},
-									"formatSettings": {
-										"type": "DelimitedTextWriteSettings",
-										"quoteAllText": true,
-										"fileExtension": ".txt"
-									}
-								},
-								"enableStaging": false,
-								"translator": {
-									"type": "TabularTranslator",
-									"typeConversion": true,
-									"typeConversionSettings": {
-										"allowDataTruncation": true,
-										"treatBooleanAsNumber": false
-									}
-								}
-							},
-							"inputs": [
-								{
-									"referenceName": "modifiedgob_blob",
-									"type": "DatasetReference"
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "modifiedgobds_dl",
-									"type": "DatasetReference"
-								}
-							]
+								"enableStaging": false
+							}
 						},
 						{
 							"name": "Delete1",
@@ -163,7 +129,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "modifiedgob_blob",
+									"referenceName": "InputCSV",
 									"type": "DatasetReference"
 								},
 								"logStorageSettings": {
