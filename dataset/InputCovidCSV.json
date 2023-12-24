@@ -1,0 +1,67 @@
+{
+	"name": "InputCovidCSV",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "data"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "dateRep",
+				"type": "String"
+			},
+			{
+				"name": "day",
+				"type": "String"
+			},
+			{
+				"name": "month",
+				"type": "String"
+			},
+			{
+				"name": "year",
+				"type": "String"
+			},
+			{
+				"name": "cases",
+				"type": "String"
+			},
+			{
+				"name": "deaths",
+				"type": "String"
+			},
+			{
+				"name": "countriesAndTerritories",
+				"type": "String"
+			},
+			{
+				"name": "geoId",
+				"type": "String"
+			},
+			{
+				"name": "countryterritoryCode",
+				"type": "String"
+			},
+			{
+				"name": "popData2020",
+				"type": "String"
+			},
+			{
+				"name": "continentExp",
+				"type": "String"
+			}
+		]
+	}
+}

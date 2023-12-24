@@ -23,12 +23,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "InputCSV",
+						"referenceName": "InputCovidCSV_Mod",
 						"type": "DatasetReference"
 					},
-					"fieldList": [
-						"columnCount"
-					],
+					"fieldList": [],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
 						"recursive": true,
@@ -46,7 +44,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "InputCSV",
+						"referenceName": "InputCovidCSV",
 						"type": "DatasetReference"
 					},
 					"timeout": "0.00:01:00",
@@ -130,7 +128,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "InputModified",
+									"referenceName": "InputCovidCSV_Mod",
 									"type": "DatasetReference"
 								}
 							],
@@ -162,7 +160,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "InputCSV",
+									"referenceName": "InputCovidCSV_Mod",
 									"type": "DatasetReference"
 								},
 								"logStorageSettings": {
@@ -175,7 +173,7 @@
 								"enableLogging": true,
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
-									"fileListPath": "data/pointer.txt",
+									"recursive": true,
 									"enablePartitionDiscovery": false
 								}
 							}
@@ -227,7 +225,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "AggBlob",
+									"referenceName": "GroupByCountry",
 									"type": "DatasetReference"
 								}
 							],
@@ -259,7 +257,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "AggBlob",
+									"referenceName": "GroupByCountry",
 									"type": "DatasetReference"
 								},
 								"logStorageSettings": {
