@@ -51,7 +51,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "InputCSV",
+								"referenceName": "InputCovidCSV_Mod",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
@@ -75,7 +75,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "InputCSV",
+								"referenceName": "InputCovidCSV",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
@@ -97,7 +97,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"expression": {
-								"value": "@equals(activity('Get Metadata1').output.columnCount, 8)\n",
+								"value": "@equals(activity('Get Metadata1').output.columnCount,11 )\n",
 								"type": "Expression"
 							},
 							"ifFalseActivities": [
@@ -160,7 +160,7 @@
 									},
 									"inputs": [
 										{
-											"referenceName": "InputModified",
+											"referenceName": "InputCovidCSV_Mod",
 											"type": "DatasetReference",
 											"parameters": {}
 										}
@@ -194,7 +194,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataset": {
-											"referenceName": "InputCSV",
+											"referenceName": "InputCovidCSV_Mod",
 											"type": "DatasetReference",
 											"parameters": {}
 										},
@@ -208,7 +208,7 @@
 										"enableLogging": true,
 										"storeSettings": {
 											"type": "AzureBlobStorageReadSettings",
-											"fileListPath": "data/pointer.txt",
+											"recursive": true,
 											"enablePartitionDiscovery": false
 										}
 									}
@@ -260,7 +260,7 @@
 									},
 									"inputs": [
 										{
-											"referenceName": "AggBlob",
+											"referenceName": "GroupByCountry",
 											"type": "DatasetReference",
 											"parameters": {}
 										}
@@ -294,7 +294,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataset": {
-											"referenceName": "AggBlob",
+											"referenceName": "GroupByCountry",
 											"type": "DatasetReference",
 											"parameters": {}
 										},
@@ -378,16 +378,16 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/InputCSV')]",
+				"[concat(variables('factoryId'), '/datasets/InputCovidCSV_Mod')]",
+				"[concat(variables('factoryId'), '/datasets/InputCovidCSV')]",
 				"[concat(variables('factoryId'), '/dataflows/dataflow1')]",
-				"[concat(variables('factoryId'), '/datasets/InputModified')]",
 				"[concat(variables('factoryId'), '/datasets/OutCSV')]",
-				"[concat(variables('factoryId'), '/datasets/AggBlob')]",
+				"[concat(variables('factoryId'), '/datasets/GroupByCountry')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AggBlob')]",
+			"name": "[concat(parameters('factoryName'), '/GroupByCountry')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -400,10 +400,10 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "agregado.csv",
+						"fileName": "country.csv",
 						"container": "data"
 					},
-					"columnDelimiter": ";",
+					"columnDelimiter": ",",
 					"escapeChar": "\\",
 					"firstRowAsHeader": true,
 					"quoteChar": "\""
@@ -415,7 +415,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/InputCSV')]",
+			"name": "[concat(parameters('factoryName'), '/InputCovidCSV')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -428,41 +428,56 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "gob.csv",
 						"container": "data"
 					},
-					"columnDelimiter": ";",
+					"columnDelimiter": ",",
 					"escapeChar": "\\",
 					"firstRowAsHeader": true,
 					"quoteChar": "\""
 				},
 				"schema": [
 					{
-						"name": "Principales indicadores",
+						"name": "dateRep",
 						"type": "String"
 					},
 					{
-						"name": "Pertenencia a grupo empresarial",
+						"name": "day",
 						"type": "String"
 					},
 					{
-						"name": "Grupo empresarial",
+						"name": "month",
 						"type": "String"
 					},
 					{
-						"name": "Sector de actividad",
+						"name": "year",
 						"type": "String"
 					},
 					{
-						"name": "Tamaño de la empresa (según ocupados)",
+						"name": "cases",
 						"type": "String"
 					},
 					{
-						"name": "Periodo",
+						"name": "deaths",
 						"type": "String"
 					},
 					{
-						"name": "Total",
+						"name": "countriesAndTerritories",
+						"type": "String"
+					},
+					{
+						"name": "geoId",
+						"type": "String"
+					},
+					{
+						"name": "countryterritoryCode",
+						"type": "String"
+					},
+					{
+						"name": "popData2020",
+						"type": "String"
+					},
+					{
+						"name": "continentExp",
 						"type": "String"
 					}
 				]
@@ -472,7 +487,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/InputModified')]",
+			"name": "[concat(parameters('factoryName'), '/InputCovidCSV_Mod')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -485,10 +500,10 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "gob.csv",
+						"fileName": "data.csv",
 						"container": "data"
 					},
-					"columnDelimiter": ";",
+					"columnDelimiter": ",",
 					"escapeChar": "\\",
 					"firstRowAsHeader": true,
 					"quoteChar": "\""
@@ -566,7 +581,7 @@
 					"sources": [
 						{
 							"dataset": {
-								"referenceName": "InputCSV",
+								"referenceName": "InputCovidCSV",
 								"type": "DatasetReference"
 							},
 							"name": "entradablob"
@@ -575,14 +590,14 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "InputModified",
+								"referenceName": "InputCovidCSV_Mod",
 								"type": "DatasetReference"
 							},
 							"name": "salidaMain"
 						},
 						{
 							"dataset": {
-								"referenceName": "AggBlob",
+								"referenceName": "GroupByCountry",
 								"type": "DatasetReference"
 							},
 							"name": "salidaAgregado"
@@ -590,32 +605,31 @@
 					],
 					"transformations": [
 						{
-							"name": "branch"
-						},
-						{
 							"name": "agggroupbysector"
 						}
 					],
 					"scriptLines": [
 						"source(output(",
-						"          {Principales indicadores} as string,",
-						"          {Pertenencia a grupo empresarial} as string,",
-						"          {Grupo empresarial} as string,",
-						"          {Sector de actividad} as string,",
-						"          {Tamaño de la empresa (según ocupados)} as string,",
-						"          Periodo as string,",
-						"          Total as string",
+						"          dateRep as string,",
+						"          day as string,",
+						"          month as string,",
+						"          year as string,",
+						"          cases as string,",
+						"          deaths as string,",
+						"          countriesAndTerritories as string,",
+						"          geoId as string,",
+						"          countryterritoryCode as string,",
+						"          popData2020 as string,",
+						"          continentExp as string",
 						"     ),",
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> entradablob",
-						"entradablob derive(Subperiodo = concat(Periodo, \" Primer Semestre\"),",
-						"     partitionBy('hash', 1)) ~> branch",
-						"branch aggregate(groupBy({Sector de actividad}),",
-						"     SectorOrdenado = count()) ~> agggroupbysector",
-						"branch sink(allowSchemaDrift: true,",
+						"entradablob aggregate(groupBy(countriesAndTerritories),",
+						"     PaisesCount = count()) ~> agggroupbysector",
+						"entradablob sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
-						"     partitionFileNames:['gob.csv'],",
+						"     partitionFileNames:['data.csv'],",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
 						"     partitionBy('hash', 1),",
@@ -623,7 +637,7 @@
 						"     postCommands: []) ~> salidaMain",
 						"agggroupbysector sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
-						"     partitionFileNames:['agregado.csv'],",
+						"     partitionFileNames:['country.csv'],",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
 						"     partitionBy('hash', 1),",
@@ -633,9 +647,9 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/InputCSV')]",
-				"[concat(variables('factoryId'), '/datasets/InputModified')]",
-				"[concat(variables('factoryId'), '/datasets/AggBlob')]"
+				"[concat(variables('factoryId'), '/datasets/InputCovidCSV')]",
+				"[concat(variables('factoryId'), '/datasets/InputCovidCSV_Mod')]",
+				"[concat(variables('factoryId'), '/datasets/GroupByCountry')]"
 			]
 		}
 	]
