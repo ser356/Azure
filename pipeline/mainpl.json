@@ -216,28 +216,8 @@
 										"fileExtension": ".txt"
 									}
 								},
-								"enableStaging": false,
-								"translator": {
-									"type": "TabularTranslator",
-									"typeConversion": true,
-									"typeConversionSettings": {
-										"allowDataTruncation": true,
-										"treatBooleanAsNumber": false
-									}
-								}
-							},
-							"inputs": [
-								{
-									"referenceName": "agregado_dl",
-									"type": "DatasetReference"
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "agregado_blob",
-									"type": "DatasetReference"
-								}
-							]
+								"enableStaging": false
+							}
 						},
 						{
 							"name": "Delete2",
@@ -259,10 +239,6 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"dataset": {
-									"referenceName": "agregado_dl",
-									"type": "DatasetReference"
-								},
 								"logStorageSettings": {
 									"linkedServiceName": {
 										"referenceName": "AzureBlobStorage1",

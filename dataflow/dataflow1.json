@@ -22,7 +22,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "agregado_blob",
+						"referenceName": "modifiedgob_blob",
 						"type": "DatasetReference"
 					},
 					"name": "sink2"
@@ -68,6 +68,16 @@
 				"     skipDuplicateMapOutputs: true) ~> sink1",
 				"aggregate1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     input(",
+				"          {Principales indicadores} as string,",
+				"          {Pertenencia a grupo empresarial} as string,",
+				"          {Grupo empresarial} as string,",
+				"          {Sector de actividad} as string,",
+				"          {Tamaño de la empresa (según ocupados)} as string,",
+				"          Periodo as string,",
+				"          Total as string,",
+				"          Subperiodo as string",
+				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     partitionBy('hash', 1)) ~> sink2"
