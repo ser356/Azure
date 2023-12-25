@@ -31,6 +31,9 @@
 			"transformations": [
 				{
 					"name": "aggregate1"
+				},
+				{
+					"name": "lookup1"
 				}
 			],
 			"scriptLines": [
@@ -52,6 +55,10 @@
 				"     ignoreNoFilesFound: false) ~> entradablob",
 				"entradablob aggregate(groupBy(dateRep),",
 				"     muertosTotal = sum(toInteger(deaths))) ~> aggregate1",
+				"aggregate1 lookup(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1",
 				"entradablob sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     partitionFileNames:['data.csv'],",
@@ -60,7 +67,7 @@
 				"     partitionBy('hash', 1),",
 				"     preCommands: [],",
 				"     postCommands: []) ~> salidaMain",
-				"aggregate1 sink(allowSchemaDrift: true,",
+				"lookup1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     partitionFileNames:['deaths.csv'],",
 				"     skipDuplicateMapInputs: true,",
