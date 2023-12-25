@@ -51,7 +51,7 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> entradablob",
 				"entradablob aggregate(groupBy(dateRep),",
-				"     muertosTotal = count(deaths)) ~> aggregate1",
+				"     muertosTotal = ERROR_FUNCTION('')) ~> aggregate1",
 				"entradablob sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     partitionFileNames:['data.csv'],",
