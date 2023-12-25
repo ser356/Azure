@@ -606,11 +606,14 @@
 					"transformations": [
 						{
 							"name": "aggregate1"
+						},
+						{
+							"name": "derivedColumn1"
 						}
 					],
 					"scriptLines": [
 						"source(output(",
-						"          dateRep as string,",
+						"          dateRep as timestamp 'dd/MM/yyyy',",
 						"          day as string,",
 						"          month as string,",
 						"          year as string,",
@@ -624,9 +627,11 @@
 						"     ),",
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
+						"     inferDriftedColumnTypes: true,",
 						"     ignoreNoFilesFound: false) ~> entradablob",
 						"entradablob aggregate(groupBy(dateRep),",
 						"     muertosTotal = sum(toInteger(deaths))) ~> aggregate1",
+						"aggregate1 derive(dateRep = dropRight(toString(dateRep), length(\"00:00:00\"))) ~> derivedColumn1",
 						"entradablob sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     partitionFileNames:['data.csv'],",
@@ -635,12 +640,10 @@
 						"     partitionBy('hash', 1),",
 						"     preCommands: [],",
 						"     postCommands: []) ~> salidaMain",
-						"aggregate1 sink(allowSchemaDrift: true,",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     partitionFileNames:['deaths.csv'],",
 						"     dateFormat:'yyyy/MM/dd',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
 						"     partitionBy('hash', 1)) ~> salidaAgg"
 					]
 				}
