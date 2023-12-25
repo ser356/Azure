@@ -62,8 +62,10 @@
 				"     postCommands: []) ~> salidaMain",
 				"aggregate1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     partitionFileNames:['deaths.csv'],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> salidaAgg"
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> salidaAgg"
 			]
 		}
 	}
