@@ -19,18 +19,11 @@
 						"type": "DatasetReference"
 					},
 					"name": "salidaMain"
-				},
-				{
-					"dataset": {
-						"referenceName": "GroupByCountry",
-						"type": "DatasetReference"
-					},
-					"name": "salidaAgregado"
 				}
 			],
 			"transformations": [
 				{
-					"name": "agggroupbysector"
+					"name": "aggregate1"
 				}
 			],
 			"scriptLines": [
@@ -50,8 +43,8 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> entradablob",
-				"entradablob aggregate(groupBy(countriesAndTerritories),",
-				"     PaisesCount = count()) ~> agggroupbysector",
+				"entradablob aggregate(groupBy(dateRep),",
+				"     muertosTotal = sum(toInteger(deaths))) ~> aggregate1",
 				"entradablob sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     partitionFileNames:['data.csv'],",
@@ -59,15 +52,7 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     partitionBy('hash', 1),",
 				"     preCommands: [],",
-				"     postCommands: []) ~> salidaMain",
-				"agggroupbysector sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     partitionFileNames:['country.csv'],",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1),",
-				"     preCommands: [],",
-				"     postCommands: []) ~> salidaAgregado"
+				"     postCommands: []) ~> salidaMain"
 			]
 		}
 	}
