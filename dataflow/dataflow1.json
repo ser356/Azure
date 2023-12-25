@@ -50,7 +50,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> entradablob",
-				"entradablob aggregate(groupBy(dateRep),",
+				"entradablob aggregate(groupBy(day),",
 				"     muertosTotal = sum(toInteger(deaths))) ~> aggregate1",
 				"entradablob sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
