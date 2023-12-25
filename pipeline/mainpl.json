@@ -227,7 +227,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "GroupByCountry",
+									"referenceName": "GroupByFecha",
 									"type": "DatasetReference"
 								}
 							],
@@ -259,7 +259,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "GroupByCountry",
+									"referenceName": "GroupByFecha",
 									"type": "DatasetReference"
 								},
 								"logStorageSettings": {

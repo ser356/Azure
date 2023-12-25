@@ -1,5 +1,5 @@
 {
-	"name": "GroupByCountry",
+	"name": "GroupByFecha",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "country.csv",
+				"fileName": "deaths.csv",
 				"container": "data"
 			},
 			"columnDelimiter": ",",

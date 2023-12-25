@@ -19,6 +19,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "salidaMain"
+				},
+				{
+					"dataset": {
+						"referenceName": "GroupByFecha",
+						"type": "DatasetReference"
+					},
+					"name": "salidaAgg"
 				}
 			],
 			"transformations": [
@@ -52,7 +59,11 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     partitionBy('hash', 1),",
 				"     preCommands: [],",
-				"     postCommands: []) ~> salidaMain"
+				"     postCommands: []) ~> salidaMain",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> salidaAgg"
 			]
 		}
 	}
