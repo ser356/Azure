@@ -260,7 +260,7 @@
 									},
 									"inputs": [
 										{
-											"referenceName": "GroupByCountry",
+											"referenceName": "GroupByFecha",
 											"type": "DatasetReference",
 											"parameters": {}
 										}
@@ -294,7 +294,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataset": {
-											"referenceName": "GroupByCountry",
+											"referenceName": "GroupByFecha",
 											"type": "DatasetReference",
 											"parameters": {}
 										},
@@ -360,7 +360,7 @@
 								"datasetParameters": {
 									"entradablob": {},
 									"salidaMain": {},
-									"salidaAgregado": {}
+									"salidaAgg": {}
 								}
 							},
 							"staging": {},
@@ -382,12 +382,12 @@
 				"[concat(variables('factoryId'), '/datasets/InputCovidCSV')]",
 				"[concat(variables('factoryId'), '/dataflows/dataflow1')]",
 				"[concat(variables('factoryId'), '/datasets/OutCSV')]",
-				"[concat(variables('factoryId'), '/datasets/GroupByCountry')]",
+				"[concat(variables('factoryId'), '/datasets/GroupByFecha')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/GroupByCountry')]",
+			"name": "[concat(parameters('factoryName'), '/GroupByFecha')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -400,7 +400,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "country.csv",
+						"fileName": "deaths.csv",
 						"container": "data"
 					},
 					"columnDelimiter": ",",
@@ -597,15 +597,15 @@
 						},
 						{
 							"dataset": {
-								"referenceName": "GroupByCountry",
+								"referenceName": "GroupByFecha",
 								"type": "DatasetReference"
 							},
-							"name": "salidaAgregado"
+							"name": "salidaAgg"
 						}
 					],
 					"transformations": [
 						{
-							"name": "agggroupbysector"
+							"name": "aggregate1"
 						}
 					],
 					"scriptLines": [
@@ -625,8 +625,8 @@
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> entradablob",
-						"entradablob aggregate(groupBy(countriesAndTerritories),",
-						"     PaisesCount = count()) ~> agggroupbysector",
+						"entradablob aggregate(groupBy(dateRep),",
+						"     muertosTotal = sum(toInteger(deaths))) ~> aggregate1",
 						"entradablob sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     partitionFileNames:['data.csv'],",
@@ -635,21 +635,20 @@
 						"     partitionBy('hash', 1),",
 						"     preCommands: [],",
 						"     postCommands: []) ~> salidaMain",
-						"agggroupbysector sink(allowSchemaDrift: true,",
+						"aggregate1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
-						"     partitionFileNames:['country.csv'],",
+						"     partitionFileNames:['deaths.csv'],",
+						"     dateFormat:'yyyy/MM/dd',",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1),",
-						"     preCommands: [],",
-						"     postCommands: []) ~> salidaAgregado"
+						"     partitionBy('hash', 1)) ~> salidaAgg"
 					]
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/InputCovidCSV')]",
 				"[concat(variables('factoryId'), '/datasets/InputCovidCSV_Mod')]",
-				"[concat(variables('factoryId'), '/datasets/GroupByCountry')]"
+				"[concat(variables('factoryId'), '/datasets/GroupByFecha')]"
 			]
 		}
 	]
